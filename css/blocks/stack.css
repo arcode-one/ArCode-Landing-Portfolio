@@ -156,11 +156,24 @@
 	animation-play-state: paused;
 }
 
+.stack-radar__orbit.is-active {
+	animation-play-state: paused;
+}
+
 .stack-radar__orbit:has(.stack-radar__node:hover) .stack-radar__node {
 	animation-play-state: paused;
 }
 
+.stack-radar__orbit.is-active .stack-radar__node {
+	animation-play-state: paused;
+}
+
 .stack-radar__orbit:has(.stack-radar__node:hover) .stack-radar__orbit-ring {
+	border-color: rgba(255, 59, 95, 0.28);
+	box-shadow: 0 0 26px rgba(255, 59, 95, 0.08);
+}
+
+.stack-radar__orbit.is-active .stack-radar__orbit-ring {
 	border-color: rgba(255, 59, 95, 0.28);
 	box-shadow: 0 0 26px rgba(255, 59, 95, 0.08);
 }
@@ -175,7 +188,22 @@
 		0 16px 36px rgba(255, 59, 95, 0.12);
 }
 
+.stack-radar__orbit.is-active .stack-radar__node {
+	border-color: rgba(255, 59, 95, 0.28);
+	background:
+		linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.016)),
+		rgba(255, 255, 255, 0.02);
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.06),
+		0 16px 36px rgba(255, 59, 95, 0.12);
+}
+
 .stack-radar__orbit:has(.stack-radar__node:hover) .stack-radar__node-desc {
+	opacity: 1;
+	transform: translate(-50%, 0) rotate(0deg);
+}
+
+.stack-radar__orbit.is-active .stack-radar__node-desc {
 	opacity: 1;
 	transform: translate(-50%, 0) rotate(0deg);
 }
@@ -240,7 +268,14 @@
 	animation: stack-orbit-counter var(--orbit-duration) linear infinite;
 	animation-direction: var(--orbit-direction);
 	pointer-events: auto;
+	cursor: pointer;
+	touch-action: manipulation;
 	z-index: 2;
+}
+
+.stack-radar__node:focus-visible {
+	outline: 2px solid rgba(255, 59, 95, 0.7);
+	outline-offset: 3px;
 }
 
 .stack-radar__node-title {

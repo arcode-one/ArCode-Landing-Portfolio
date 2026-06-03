@@ -8,6 +8,7 @@ import { initProcessStack } from "./modules/process-stack.js";
 import { initReveal } from "./modules/reveal.js";
 import { initSideNav } from "./modules/side-nav.js";
 import { initScrollTop } from "./modules/scroll-top.js";
+import { initStackRadar } from "./modules/stack-radar.js";
 
 initHeroCardHoverFix();
 initHeroCardTilt();
@@ -19,3 +20,4 @@ initParallax();
 initFaq();
 initSideNav();
 initScrollTop();
+initStackRadar();
