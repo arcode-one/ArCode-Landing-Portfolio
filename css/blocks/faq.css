@@ -1,0 +1,118 @@
+.faq {
+  display: grid;
+  gap: 12px;
+}
+
+.faq-section__eyebrow {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+
+.faq-section__title {
+  font-size: clamp(38px, 5.4vw, 82px);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+}
+
+.faq__item {
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.035);
+  transition:
+    border-color 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.faq__item.is-active {
+  border-color: rgba(255, 59, 95, 0.2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.03));
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.16);
+}
+
+.faq__question {
+  width: 100%;
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  padding: 20px 24px;
+  text-align: left;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.faq__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  transform-origin: center;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.faq__item.is-active .faq__icon {
+  transform: rotate(45deg);
+  color: var(--accent);
+}
+
+.faq__answer {
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq__answer > * {
+  min-height: 0;
+}
+
+.faq__answer-text {
+  padding: 0 24px 20px;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 850px;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq__item.is-active .faq__answer {
+  grid-template-rows: 1fr;
+}
+
+.faq__item.is-active .faq__answer-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+  .faq-section__title {
+    font-size: clamp(38px, 7vw, 64px);
+  }
+}
+
+@media (max-width: 640px) {
+  .faq-section__title {
+    line-height: 0.94;
+  }
+}
+
+@media (max-width: 430px) {
+  .faq-section__eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+  }
+}

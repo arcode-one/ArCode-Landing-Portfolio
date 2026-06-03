@@ -1,0 +1,23 @@
+/* base */
+@import "./base/normalize.css";
+@import "./base/vars.css";
+@import "./base/globals.css";
+
+/* blocks */
+@import "./blocks/components.css";
+@import "./blocks/hero.css";
+@import "./blocks/about.css";
+@import "./blocks/why.css";
+@import "./blocks/marquee.css";
+@import "./blocks/offer.css";
+@import "./blocks/reality.css";
+@import "./blocks/stack.css";
+@import "./blocks/process.css";
+@import "./blocks/cases.css";
+@import "./blocks/price.css";
+@import "./blocks/faq.css";
+@import "./blocks/contact.css";
+@import "./blocks/footer.css";
+@import "./blocks/side-nav.css";
+@import "./blocks/scroll-top.css";
+@import "./blocks/reveal.css";

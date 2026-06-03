@@ -1,0 +1,21 @@
+import { initFaq } from "./modules/faq.js";
+import { initHeroCardHoverFix } from "./modules/hero-card-hover-fix.js";
+import { initHeroCardTilt } from "./modules/hero-card-tilt.js";
+import { initHeroLine } from "./modules/hero-line.js";
+import { initParallax } from "./modules/parallax.js";
+import { initPriceStack } from "./modules/price-stack.js";
+import { initProcessStack } from "./modules/process-stack.js";
+import { initReveal } from "./modules/reveal.js";
+import { initSideNav } from "./modules/side-nav.js";
+import { initScrollTop } from "./modules/scroll-top.js";
+
+initHeroCardHoverFix();
+initHeroCardTilt();
+initHeroLine();
+initReveal();
+initPriceStack();
+initProcessStack();
+initParallax();
+initFaq();
+initSideNav();
+initScrollTop();
