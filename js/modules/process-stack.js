@@ -51,7 +51,19 @@ export function initProcessStack() {
     return;
   }
 
+  const prefersLightMode =
+    window.matchMedia("(pointer: coarse)").matches ||
+    window.matchMedia("(hover: none)").matches;
+
   const updateProcessStack = () => {
+    if (prefersLightMode) {
+      processSteps.forEach((step) => {
+        step.classList.remove("is-precompact");
+        step.classList.remove("is-compact");
+      });
+      return;
+    }
+
     const width = window.innerWidth;
     const { offsets, pause } = getProcessStackConfig();
     const useCompactOnly = width <= 820;

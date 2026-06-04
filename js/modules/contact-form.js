@@ -17,6 +17,7 @@ export function initContactForm() {
 
   const submitButton = form.querySelector('button[type="submit"]');
   const statusNode = form.querySelector(".contact-form__status");
+  let statusTimeoutId = 0;
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -27,6 +28,7 @@ export function initContactForm() {
     }
 
     if (statusNode) {
+      window.clearTimeout(statusTimeoutId);
       statusNode.hidden = true;
       statusNode.textContent = "";
       delete statusNode.dataset.state;
@@ -55,6 +57,14 @@ export function initContactForm() {
         "error"
       );
     } finally {
+      if (statusNode && !statusNode.hidden) {
+        statusTimeoutId = window.setTimeout(() => {
+          statusNode.hidden = true;
+          statusNode.textContent = "";
+          delete statusNode.dataset.state;
+        }, 7000);
+      }
+
       if (submitButton instanceof HTMLButtonElement) {
         submitButton.disabled = false;
         submitButton.textContent = "Отправить заявку";

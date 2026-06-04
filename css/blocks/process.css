@@ -499,6 +499,11 @@
 }
 
 @media (hover: none), (pointer: coarse) {
+  .process--merge {
+    gap: 14px;
+    padding-bottom: 0;
+  }
+
   .process-step,
   .process-step__id,
   .process-step__title,
@@ -508,12 +513,45 @@
   }
 
   .process--merge .process-step {
+    position: static;
+    top: auto;
     backdrop-filter: none;
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .process--merge .process-step.is-precompact,
+  .process--merge .process-step.is-compact {
+    padding: inherit;
+    border-color: var(--line);
+    background: rgba(18, 18, 18, 0.72);
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
   .process--merge .process-step.is-precompact .process-step__text,
   .process--merge .process-step.is-compact .process-step__text {
+    opacity: 1;
+    max-height: none;
+    transform: none;
     filter: none;
+  }
+
+  .process--merge .process-step.is-compact::before {
+    display: none;
+  }
+
+  .process--merge .process-step.is-precompact .process-step__id,
+  .process--merge .process-step.is-compact .process-step__id,
+  .process--merge .process-step.is-precompact .process-step__title,
+  .process--merge .process-step.is-compact .process-step__title,
+  .process--merge .process-step.is-precompact .process-step__tag,
+  .process--merge .process-step.is-compact .process-step__tag {
+    opacity: 1;
+    transform: none;
+    margin-bottom: 0;
   }
 
   .process-step:hover {
