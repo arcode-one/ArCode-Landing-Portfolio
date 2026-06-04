@@ -11,13 +11,22 @@ import { initScrollTop } from "./modules/scroll-top.js";
 import { initStackRadar } from "./modules/stack-radar.js";
 
 initHeroCardHoverFix();
-initHeroCardTilt();
-initHeroLine();
 initReveal();
-initPriceStack();
-initProcessStack();
-initParallax();
 initFaq();
-initSideNav();
-initScrollTop();
-initStackRadar();
+
+const initDeferredEnhancements = () => {
+	initHeroCardTilt();
+	initHeroLine();
+	initPriceStack();
+	initProcessStack();
+	initParallax();
+	initSideNav();
+	initScrollTop();
+	initStackRadar();
+};
+
+if ("requestIdleCallback" in window) {
+	window.requestIdleCallback(initDeferredEnhancements, { timeout: 1200 });
+} else {
+	window.setTimeout(initDeferredEnhancements, 0);
+}
