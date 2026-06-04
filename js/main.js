@@ -1,4 +1,5 @@
 import { initFaq } from "./modules/faq.js";
+import { initContactForm } from "./modules/contact-form.js";
 import { initHeroCardHoverFix } from "./modules/hero-card-hover-fix.js";
 import { initHeroCardTilt } from "./modules/hero-card-tilt.js";
 import { initHeroLine } from "./modules/hero-line.js";
@@ -14,6 +15,7 @@ import { initTelegramLinks } from "./modules/telegram-link.js";
 initHeroCardHoverFix();
 initReveal();
 initFaq();
+initContactForm();
 initTelegramLinks();
 
 const initDeferredEnhancements = () => {

@@ -52,22 +52,39 @@ export function initProcessStack() {
   }
 
   const updateProcessStack = () => {
+    const width = window.innerWidth;
     const { offsets, pause } = getProcessStackConfig();
+    const useCompactOnly = width <= 820;
 
     processSteps.forEach((step, index) => {
       const rect = step.getBoundingClientRect();
       const threshold =
         offsets[index] ?? offsets[offsets.length - 1];
-      const isPrecompact = rect.top <= threshold + pause;
-      const isCompact = rect.top <= threshold + 2;
+      const isCompact = rect.top <= threshold + (useCompactOnly ? pause : 2);
+      const isPrecompact = useCompactOnly ? false : rect.top <= threshold + pause;
 
       step.classList.toggle("is-precompact", isPrecompact);
       step.classList.toggle("is-compact", isCompact);
     });
   };
 
-  window.addEventListener("scroll", updateProcessStack, { passive: true });
-  window.addEventListener("resize", updateProcessStack);
+  let ticking = false;
+
+  const requestUpdate = () => {
+    if (ticking) {
+      return;
+    }
+
+    ticking = true;
+
+    window.requestAnimationFrame(() => {
+      updateProcessStack();
+      ticking = false;
+    });
+  };
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
 
   updateProcessStack();
 }
