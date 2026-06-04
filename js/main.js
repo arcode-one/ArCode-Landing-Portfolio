@@ -9,10 +9,12 @@ import { initReveal } from "./modules/reveal.js";
 import { initSideNav } from "./modules/side-nav.js";
 import { initScrollTop } from "./modules/scroll-top.js";
 import { initStackRadar } from "./modules/stack-radar.js";
+import { initTelegramLinks } from "./modules/telegram-link.js";
 
 initHeroCardHoverFix();
 initReveal();
 initFaq();
+initTelegramLinks();
 
 const initDeferredEnhancements = () => {
 	initHeroCardTilt();
