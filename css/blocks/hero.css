@@ -56,7 +56,14 @@
 	opacity: 0;
 	will-change: transform, opacity;
 	animation: hero-intro-reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-	animation-delay: 0.42s;
+	animation-delay: 0.54s;
+}
+
+.hero-intro--summary {
+	opacity: 0;
+	will-change: transform, opacity;
+	animation: hero-intro-reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	animation-delay: 0.36s;
 }
 
 .hero-intro--card {
@@ -86,6 +93,7 @@
 }
 
 .hero-intro--label,
+.hero-intro--summary,
 .hero-intro--tags {
 	transform: translateY(16px);
 	animation-name: hero-intro-move;
@@ -161,6 +169,16 @@
 	text-shadow: 0 0 28px rgba(255, 59, 95, 0.24);
 }
 
+.hero__summary {
+	max-width: 680px;
+	margin: 42px auto 0;
+	color: var(--muted);
+	font-size: clamp(16px, 1.25vw, 19px);
+	line-height: 1.55;
+	text-align: center;
+	text-wrap: balance;
+}
+
 @keyframes hero-title-settle {
 	from {
 		letter-spacing: -0.065em;
@@ -187,7 +205,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin: 72px 0 56px;
+	margin: 34px 0 56px;
 }
 
 .hero__telegram {
@@ -453,7 +471,7 @@
 	}
 
 	.hero__actions {
-		margin: 56px 0 52px;
+		margin: 30px 0 52px;
 	}
 
 	.hero-card {
@@ -505,7 +523,7 @@
 	}
 
 	.hero__actions {
-		margin: 48px 0 52px;
+		margin: 28px 0 52px;
 	}
 
 	.hero-card {
@@ -564,8 +582,15 @@
 		margin-top: 28px;
 	}
 
+	.hero__summary {
+		max-width: 520px;
+		margin-top: 26px;
+		font-size: 15px;
+		line-height: 1.5;
+	}
+
 	.hero__actions {
-		margin: 28px 0 32px;
+		margin: 22px 0 32px;
 	}
 
 	.hero__line {
@@ -629,7 +654,12 @@
 	}
 
 	.hero__actions {
-		margin: 24px 0 24px;
+		margin: 20px 0 24px;
+	}
+
+	.hero__summary {
+		margin-top: 22px;
+		font-size: 14px;
 	}
 
 	.hero__telegram {
@@ -706,4 +736,15 @@
 		opacity: 1;
 		transform: none;
 	}
+}
+
+/* Первый экран всегда занимает полную видимую высоту устройства. */
+.hero {
+	padding-top: 0;
+}
+
+.hero__viewport {
+	min-height: 100vh;
+	min-height: 100dvh;
+	padding-top: clamp(40px, 7dvh, 72px);
 }
