@@ -78,10 +78,10 @@
 }
 
 .faq__answer-text {
+  width: 100%;
   padding: 0 24px 20px;
   color: var(--muted);
   line-height: 1.55;
-  max-width: 850px;
   opacity: 0;
   transform: translateY(-12px);
   transition:

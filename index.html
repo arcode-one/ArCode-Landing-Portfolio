@@ -198,7 +198,7 @@
 								"name": "Как происходит оплата?",
 								"acceptedAnswer": {
 									"@type": "Answer",
-									"text": "После согласования всех деталей вносится предоплата 50%. Оставшиеся 50% оплачиваешь после сдачи проекта. Для крупных задач оплату можно разбить на этапы. Доступна оплата по СБП или в USDT."
+									"text": "После согласования всех деталей вносится предоплата 50%. Оставшиеся 50% оплачиваешь после сдачи проекта. Для крупных задач оплату можно разбить на этапы. Оплатить можно по СБП, при необходимости оформим договор."
 								}
 							},
 							{
@@ -881,8 +881,8 @@
 								<p class="faq__answer-text">
 									После согласования всех деталей вносится предоплата 50%.
 									Оставшиеся 50% оплачиваешь после сдачи проекта. Для крупных
-									задач оплату можно разбить на этапы. Доступна оплата по СБП
-									или в USDT.
+									задач оплату можно разбить на этапы. Оплатить можно по СБП,
+									при необходимости оформим договор.
 								</p>
 							</div>
 						</div>
@@ -990,9 +990,27 @@
 								required
 								placeholder="Коротко о проекте"
 							></textarea>
-							<p class="contact-form__note">
-								Контакт нужен только для связи. Остальное не люблю.
-							</p>
+							<input
+								type="hidden"
+								name="consent_version"
+								value="2026-08-02"
+							/>
+							<label class="contact-form__consent">
+								<input
+									type="checkbox"
+									name="personal_data_consent"
+									value="accepted"
+									required
+								/>
+								<span>
+									Даю
+									<a href="/consent.html" target="_blank"
+										>согласие на обработку персональных данных</a
+									>
+									по
+									<a href="/privacy.html" target="_blank">Политике</a>.
+								</span>
+							</label>
 							<button class="btn contact__submit" type="submit">
 								Отправить заявку
 							</button>
@@ -1057,6 +1075,17 @@
 		<footer class="footer">
 			<div class="footer__inner container">
 				<div class="footer__bottom">
+					<nav class="footer__legal" aria-label="Правовая информация">
+						<a class="footer__legal-link" href="/legal.html"
+							>Правовая информация</a
+						>
+						<a class="footer__legal-link" href="/privacy.html"
+							>Политика ПД</a
+						>
+						<a class="footer__legal-link" href="/consent.html"
+							>Согласие ПД</a
+						>
+					</nav>
 					<p class="footer__copy">
 						© 2026 Concept Design & Development — ArCode
 					</p>

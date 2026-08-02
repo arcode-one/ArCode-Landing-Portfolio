@@ -748,3 +748,10 @@
 	min-height: 100dvh;
 	padding-top: clamp(40px, 7dvh, 72px);
 }
+
+@media (min-width: 1025px) {
+	.hero__line {
+		position: relative;
+		top: -28px;
+	}
+}
