@@ -89,7 +89,7 @@ function setupHeroScrollTransition() {
 	});
 	gsap.set(cardShell, {
 		autoAlpha: 1,
-		yPercent: isCompactLayout ? 80 : 110,
+		yPercent: 88,
 		transformOrigin: "50% 50%",
 		pointerEvents: "none",
 		force3D: true,
@@ -119,7 +119,7 @@ function setupHeroScrollTransition() {
 				autoAlpha: 0,
 				yPercent: -4,
 				scale: 0.985,
-				duration: 0.46,
+				duration: 0.56,
 				ease: "power2.inOut",
 			},
 			0,
@@ -131,7 +131,7 @@ function setupHeroScrollTransition() {
 				duration: 0.85,
 				ease: "none",
 			},
-			isCompactLayout ? 0.18 : 0.3,
+			0.12,
 		);
 
 	if (document.fonts?.ready) {
