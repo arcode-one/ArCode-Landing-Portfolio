@@ -45,6 +45,13 @@
 	margin: 0 auto;
 }
 
+@media (pointer: coarse) {
+	.hero--touch-transition .hero__stage,
+	.hero--touch-transition .hero__viewport {
+		min-height: 100svh;
+	}
+}
+
 .hero__viewport {
 	min-height: calc(100dvh - 160px);
 	display: flex;
@@ -294,12 +301,12 @@
 
 .hero-card {
 	width: min(980px, calc(100% - 48px));
-	min-height: 430px;
+	min-height: 400px;
 	margin: clamp(56px, 7svh, 120px) auto 0;
 	background: var(--white);
 	color: #070707;
 	border-radius: 5px;
-	padding: clamp(28px, 4vw, 56px);
+	padding: clamp(26px, 3vw, 44px) clamp(28px, 4vw, 56px);
 	position: relative;
 	overflow: hidden;
 	box-shadow: 0 35px 120px rgba(0, 0, 0, 0.62);
@@ -376,7 +383,7 @@
 	gap: 20px;
 	color: #111;
 	font-size: 13px;
-	margin-bottom: 60px;
+	margin-bottom: 48px;
 }
 
 .hero-card__nav-main,
@@ -448,7 +455,7 @@
 .hero-card__text {
 	position: relative;
 	z-index: 1;
-	margin-top: 50px;
+	margin-top: 36px;
 	font-weight: 700;
 	font-size: 15px;
 	max-width: 620px;
@@ -510,14 +517,14 @@
 	}
 
 	.hero-card {
-		min-height: 400px;
-		padding: 34px;
+		min-height: 370px;
+		padding: 30px 34px;
 	}
 }
 
 @media (max-width: 992px) {
 	.hero-card__nav {
-		margin-bottom: 70px;
+		margin-bottom: 48px;
 	}
 
 	.hero-card__title {
@@ -563,7 +570,7 @@
 
 	.hero-card {
 		width: min(calc(100% - 24px), 760px);
-		min-height: 380px;
+		min-height: 350px;
 	}
 }
 
@@ -584,7 +591,7 @@
 
 	.hero-card__nav {
 		flex-direction: column;
-		margin-bottom: 56px;
+		margin-bottom: 40px;
 	}
 
 	.hero-card__nav-main,
@@ -634,12 +641,12 @@
 
 	.hero-card {
 		width: min(calc(100% - 16px), var(--container));
-		padding: 26px 22px;
-		min-height: 360px;
+		padding: 20px 22px;
+		min-height: 320px;
 	}
 
 	.hero-card__nav {
-		margin-bottom: 42px;
+		margin-bottom: 32px;
 	}
 }
 
@@ -661,7 +668,7 @@
 	}
 
 	.hero-card__nav {
-		margin-bottom: 60px;
+		margin-bottom: 28px;
 		flex-direction: column;
 	}
 
@@ -702,7 +709,7 @@
 	}
 
 	.hero-card {
-		min-height: 340px;
+		min-height: 300px;
 		border-radius: 18px;
 	}
 
@@ -711,7 +718,7 @@
 	}
 
 	.hero-card__text {
-		margin-top: 28px;
+		margin-top: 22px;
 	}
 }
 
@@ -725,7 +732,7 @@
 	}
 
 	.hero-card {
-		padding: 22px 18px;
+		padding: 18px;
 	}
 }
 

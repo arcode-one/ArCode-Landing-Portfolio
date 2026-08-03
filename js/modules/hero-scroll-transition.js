@@ -21,6 +21,19 @@ function setupHeroScrollTransition() {
 	}
 
 	gsap.registerPlugin(ScrollTrigger);
+	const isTouchDevice =
+		ScrollTrigger.isTouch > 0 ||
+		window.matchMedia("(pointer: coarse)").matches;
+	const viewportHeight = document.documentElement.clientHeight;
+	const transitionDistance = isTouchDevice
+		? Math.max(viewportHeight * 0.85, 560)
+		: Math.max(viewportHeight * 1.05, 680);
+
+	if (isTouchDevice) {
+		ScrollTrigger.config({ ignoreMobileResize: true });
+		hero.classList.add("hero--touch-transition");
+	}
+
 	hero.classList.add("hero--scroll-transition");
 	card.classList.add("hero-intro--card-ready");
 
@@ -40,8 +53,8 @@ function setupHeroScrollTransition() {
 		scrollTrigger: {
 			trigger: stage,
 			start: "top top",
-			end: () => `+=${Math.max(window.innerHeight * 1.05, 680)}`,
-			scrub: 0.4,
+			end: `+=${transitionDistance}`,
+			scrub: isTouchDevice ? true : 0.4,
 			pin: true,
 			pinSpacing: true,
 			anticipatePin: 1,
