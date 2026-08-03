@@ -1,8 +1,16 @@
 export function initHeroCardTilt() {
   const card = document.querySelector(".hero-card");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const supportsPreciseHover = window.matchMedia(
+    "(hover: hover) and (pointer: fine)",
+  );
 
-  if (!card || reduceMotion.matches || window.innerWidth <= 992) {
+  if (
+    !card ||
+    reduceMotion.matches ||
+    !supportsPreciseHover.matches ||
+    window.innerWidth <= 992
+  ) {
     return;
   }
 

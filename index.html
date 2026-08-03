@@ -3,6 +3,98 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style>
+			html.is-restoring-scroll body > * {
+				opacity: 0 !important;
+				pointer-events: none !important;
+			}
+		</style>
+		<script>
+			(() => {
+				const scrollStorageKey = `arcode:scroll:${location.pathname}${location.search}`;
+				const navigationEntry = performance.getEntriesByType?.("navigation")[0];
+				const navigationType = navigationEntry?.type;
+				const legacyNavigationType = performance.navigation?.type;
+				const shouldRestoreScroll =
+					navigationType === "reload" ||
+					navigationType === "back_forward" ||
+					(!navigationEntry &&
+						(legacyNavigationType === 1 || legacyNavigationType === 2));
+				let savedScrollY = null;
+
+				if ("scrollRestoration" in history) {
+					history.scrollRestoration = "manual";
+				}
+
+				try {
+					const storedValue = sessionStorage.getItem(scrollStorageKey);
+					const parsedValue = Number(storedValue);
+
+					if (storedValue !== null && Number.isFinite(parsedValue)) {
+						savedScrollY = Math.max(parsedValue, 0);
+					}
+				} catch {
+					savedScrollY = null;
+				}
+
+				window.__arcodeRestoreScrollY = shouldRestoreScroll
+					? savedScrollY
+					: null;
+				window.__arcodePageLeaving = false;
+				const shouldMaskRestore =
+					shouldRestoreScroll && savedScrollY !== null && savedScrollY > 2;
+				let restoreFallbackTimer = 0;
+
+				const releaseScrollRestore = () => {
+					window.clearTimeout(restoreFallbackTimer);
+					document.documentElement.classList.remove("is-restoring-scroll");
+					window.__arcodeReleaseScrollRestore = null;
+				};
+
+				window.__arcodeReleaseScrollRestore = releaseScrollRestore;
+
+				if (shouldMaskRestore) {
+					document.documentElement.classList.add("is-restoring-scroll");
+					restoreFallbackTimer = window.setTimeout(() => {
+						window.scrollTo(0, savedScrollY);
+						releaseScrollRestore();
+					}, 3000);
+				}
+
+				let saveTimer = 0;
+
+				const saveScrollPosition = () => {
+					try {
+						sessionStorage.setItem(scrollStorageKey, String(window.scrollY));
+					} catch {
+						// Storage can be unavailable in strict privacy modes.
+					}
+				};
+
+				window.addEventListener(
+					"scroll",
+					() => {
+						if (saveTimer) return;
+
+						saveTimer = window.setTimeout(() => {
+							saveTimer = 0;
+							saveScrollPosition();
+						}, 120);
+					},
+					{ passive: true },
+				);
+				window.addEventListener("beforeunload", () => {
+					window.__arcodePageLeaving = true;
+					saveScrollPosition();
+				});
+				window.addEventListener("pagehide", saveScrollPosition);
+				document.addEventListener("visibilitychange", () => {
+					if (document.visibilityState === "hidden") {
+						saveScrollPosition();
+					}
+				});
+			})();
+		</script>
 		<title>Разработка сайтов для бизнеса под ключ — ArCode</title>
 		<meta
 			name="description"
@@ -253,8 +345,9 @@
 			<section class="hero">
 				<div class="container">
 					<div class="hero__stage">
-						<div class="hero__viewport">
-							<div class="hero__content">
+						<div class="hero__sticky">
+							<div class="hero__viewport">
+								<div class="hero__content">
 								<div class="hero__meta hero-intro hero-intro--label">
 									<p class="hero__label">Лендинг, который не мямлит</p>
 								</div>
@@ -287,10 +380,10 @@
 									</a>
 								</div>
 								<div class="hero__line"></div>
+								</div>
 							</div>
-						</div>
-						<div class="hero-card-shell">
-							<div class="hero-card hero-intro hero-intro--card">
+							<div class="hero-card-shell">
+								<div class="hero-card hero-intro hero-intro--card">
 								<div class="hero-card__nav">
 									<div class="hero-card__nav-main">
 										<strong>Alexander</strong
@@ -313,22 +406,21 @@
 									Без посредников. Без пустых обещаний. С нормальной
 									реализацией.
 								</p>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="marquee" aria-hidden="true">
 						<div class="marquee__track">
 							<div class="marquee__group">
-								<span>Чистый код</span><span>WordPress</span
-								><span>WooCommerce</span><span>Tilda</span
-								><span>Интеграция</span><span>Адаптив</span
-								><span>Скорость</span>
+								<span>Под ключ</span><span>Структура</span><span>Дизайн</span
+								><span>Разработка</span><span>Адаптив</span
+								><span>Интеграции</span><span>Запуск</span>
 							</div>
 							<div class="marquee__group">
-								<span>Чистый код</span><span>WordPress</span
-								><span>WooCommerce</span><span>Tilda</span
-								><span>Интеграция</span><span>Адаптив</span
-								><span>Скорость</span>
+								<span>Под ключ</span><span>Структура</span><span>Дизайн</span
+								><span>Разработка</span><span>Адаптив</span
+								><span>Интеграции</span><span>Запуск</span>
 							</div>
 						</div>
 					</div>
@@ -338,70 +430,121 @@
 			<section id="about" class="about">
 				<div class="container">
 					<p class="about__eyebrow reveal">Мой подход</p>
-					<div class="about__grid">
-						<article class="about-card about-card--lead reveal">
-							<h2 class="about-card__title">Не штампую сайты.</h2>
-							<p class="about-card__text">
-								Каждый проект собираю с нуля под задачу бизнеса. Хороший сайт
-								начинается не с макета и не с кода. Он начинается с понимания
-								того, что должно привести клиента к заявке.
+					<article class="about-card about-card--lead reveal">
+						<h2 class="about-card__title">Не штампую сайты.</h2>
+						<p class="about-card__text">
+							Каждый проект собираю с нуля под задачу бизнеса. Хороший сайт
+							начинается не с макета и не с кода. Он начинается с понимания
+							того, что должно привести клиента к заявке.
+						</p>
+					</article>
+
+					<div class="services-grid services-grid--approach">
+						<article class="service-card reveal">
+							<div class="service-card__num">01</div>
+							<h3 class="service-card__title">Лендинг</h3>
+							<p class="service-card__text">
+								Для запуска услуги, продукта или рекламного предложения. Одна
+								продуманная страница раскрывает ценность и ведёт к заявке.
 							</p>
 						</article>
-
-						<article class="about-card reveal">
-							<h3 class="about-card__title">Работаю один.</h3>
-							<p class="about-card__text">
-								От первого сообщения до запуска сайта ты общаешься напрямую со
-								мной. Поэтому процесс быстрее, правки понятнее, а результат не
-								расползается.
+						<article class="service-card reveal">
+							<div class="service-card__num">02</div>
+							<h3 class="service-card__title">Сайт для бизнеса</h3>
+							<p class="service-card__text">
+								Для компании с несколькими услугами, направлениями и кейсами.
+								Помогает понятно представить бизнес и выстроить доверие.
+							</p>
+						</article>
+						<article class="service-card reveal">
+							<div class="service-card__num">03</div>
+							<h3 class="service-card__title">Интернет-магазин</h3>
+							<p class="service-card__text">
+								Для продажи товаров: каталог, карточки, оформление заказа,
+								уведомления и удобное управление содержимым.
 							</p>
 						</article>
 					</div>
 				</div>
 			</section>
 
-			<section id="why" class="why">
+			<section id="cases" class="cases">
 				<div class="container">
-					<div class="section-head section-head--single reveal">
+					<div class="section-head reveal">
 						<div>
-							<p class="why__eyebrow">Что делаю</p>
-							<h2 class="why__title">
-								Не просто собираю страницы. Упаковываю тебя так, чтобы тебе
-								доверяли.
-							</h2>
+							<p class="cases__eyebrow">Кейсы</p>
+							<h2 class="cases__title">Не слова. Работы.</h2>
 						</div>
+						<p class="cases__text">
+							Это не просто красивые экраны. Это готовая логика подачи.
+						</p>
 					</div>
-					<div class="services-grid">
-						<article class="service-card reveal">
-							<div class="service-card__num">01</div>
-							<h3 class="service-card__title">Лендинги</h3>
-							<p class="service-card__text">
-								Не растягиваю на 20 экранов. Показываю ценность, закрываю
-								вопросы и веду человека к заявке.
-							</p>
+
+					<div class="cases__grid">
+						<article class="cases-card cases-card--feature reveal">
+							<a
+								class="cases-card__anchor"
+								href="https://aura.arcode-dev.ru/"
+								target="_blank"
+								rel="noreferrer"
+							>
+								<div class="cases-card__preview cases-card__preview--full">
+									<span class="cases-card__label">live project / 01</span>
+									<img
+										class="cases-card__image"
+										src="images/aura.webp"
+										alt="Превью сайта загородного комплекса Aura A-Frame"
+										width="1280"
+										height="641"
+										loading="lazy"
+										decoding="async"
+									/>
+								</div>
+								<div class="cases-card__body cases-card__body--feature">
+									<div class="cases-card__copy">
+										<h3 class="cases-card__title">Aura A-Frame</h3>
+										<div class="cases-card__meta-row">
+											<p class="cases-card__text">
+												Премиальный сайт для загородного отдыха
+											</p>
+											<span class="cases-card__cta">Открыть</span>
+										</div>
+									</div>
+								</div>
+							</a>
 						</article>
-						<article class="service-card reveal">
-							<div class="service-card__num">02</div>
-							<h3 class="service-card__title">Многостраничные сайты</h3>
-							<p class="service-card__text">
-								Без лабиринтов и лишних страниц. Человек быстро понимает куда
-								попал и что делать дальше.
-							</p>
-						</article>
-						<article class="service-card reveal">
-							<div class="service-card__num">03</div>
-							<h3 class="service-card__title">Сайты на WordPress</h3>
-							<p class="service-card__text">
-								Чтобы ты мог менять контент сам, а не ждать разработчика по
-								каждой мелочи.
-							</p>
-						</article>
-						<article class="service-card reveal">
-							<div class="service-card__num">04</div>
-							<h3 class="service-card__title">Сайты на Tilda</h3>
-							<p class="service-card__text">
-								Чтобы сайт выглядел дороже, чем стоит его разработка.
-							</p>
+
+						<article class="cases-card cases-card--feature reveal">
+							<a
+								class="cases-card__anchor"
+								href="https://titan.arcode-dev.ru/"
+								target="_blank"
+								rel="noreferrer"
+							>
+								<div class="cases-card__preview cases-card__preview--full">
+									<span class="cases-card__label">live project / 02</span>
+									<img
+										class="cases-card__image"
+										src="images/titan.webp"
+										alt="Превью сайта сборки компьютеров Titan"
+										width="1280"
+										height="760"
+										loading="lazy"
+										decoding="async"
+									/>
+								</div>
+								<div class="cases-card__body cases-card__body--feature">
+									<div class="cases-card__copy">
+										<h3 class="cases-card__title">Titan</h3>
+										<div class="cases-card__meta-row">
+											<p class="cases-card__text">
+												Сайт под сборку ПК на заказ в Казани
+											</p>
+											<span class="cases-card__cta">Открыть</span>
+										</div>
+									</div>
+								</div>
+							</a>
 						</article>
 					</div>
 				</div>
@@ -707,88 +850,6 @@
 				</div>
 			</section>
 
-			<section id="cases" class="cases">
-				<div class="container">
-					<div class="section-head reveal">
-						<div>
-							<p class="cases__eyebrow">Кейсы</p>
-							<h2 class="cases__title">Не слова. Работы.</h2>
-						</div>
-						<p class="cases__text">
-							Это не просто красивые экраны. Это готовая логика подачи.
-						</p>
-					</div>
-
-					<div class="cases__grid">
-						<article class="cases-card cases-card--feature reveal">
-							<a
-								class="cases-card__anchor"
-								href="https://aura.arcode-dev.ru/"
-								target="_blank"
-								rel="noreferrer"
-							>
-								<div class="cases-card__preview cases-card__preview--full">
-									<span class="cases-card__label">live project / 01</span>
-									<img
-										class="cases-card__image"
-										src="images/aura.webp"
-										alt="Превью сайта загородного комплекса Aura A-Frame"
-										width="1280"
-										height="641"
-										loading="lazy"
-										decoding="async"
-									/>
-								</div>
-								<div class="cases-card__body cases-card__body--feature">
-									<div class="cases-card__copy">
-										<h3 class="cases-card__title">Aura A-Frame</h3>
-										<div class="cases-card__meta-row">
-											<p class="cases-card__text">
-												Премиальный сайт для загородного отдыха
-											</p>
-											<span class="cases-card__cta">Открыть</span>
-										</div>
-									</div>
-								</div>
-							</a>
-						</article>
-
-						<article class="cases-card cases-card--feature reveal">
-							<a
-								class="cases-card__anchor"
-								href="https://titan.arcode-dev.ru/"
-								target="_blank"
-								rel="noreferrer"
-							>
-								<div class="cases-card__preview cases-card__preview--full">
-									<span class="cases-card__label">live project / 02</span>
-									<img
-										class="cases-card__image"
-										src="images/titan.webp"
-										alt="Превью сайта сборки компьютеров Titan"
-										width="1280"
-										height="760"
-										loading="lazy"
-										decoding="async"
-									/>
-								</div>
-								<div class="cases-card__body cases-card__body--feature">
-									<div class="cases-card__copy">
-										<h3 class="cases-card__title">Titan</h3>
-										<div class="cases-card__meta-row">
-											<p class="cases-card__text">
-												Сайт под сборку ПК на заказ в Казани
-											</p>
-											<span class="cases-card__cta">Открыть</span>
-										</div>
-									</div>
-								</div>
-							</a>
-						</article>
-					</div>
-				</div>
-			</section>
-
 			<section id="price">
 				<div class="container">
 					<div class="price-scene">
@@ -953,6 +1014,19 @@
 				</div>
 			</section>
 
+			<div class="marquee marquee--trust" aria-hidden="true">
+				<div class="marquee__track">
+					<div class="marquee__group">
+						<span>Понятные сроки</span><span>Прозрачная стоимость</span
+						><span>Прямая связь</span><span>Поддержка после запуска</span>
+					</div>
+					<div class="marquee__group">
+						<span>Понятные сроки</span><span>Прозрачная стоимость</span
+						><span>Прямая связь</span><span>Поддержка после запуска</span>
+					</div>
+				</div>
+			</div>
+
 			<section id="contact" class="contact">
 				<div class="container">
 					<div class="contact-box reveal">
@@ -1054,8 +1128,8 @@
 			<a class="side-nav__link" href="#about">
 				<span class="side-nav__label">Мой подход</span>
 			</a>
-			<a class="side-nav__link" href="#why">
-				<span class="side-nav__label">Что делаю</span>
+			<a class="side-nav__link" href="#cases">
+				<span class="side-nav__label">Кейсы</span>
 			</a>
 			<a class="side-nav__link" href="#offer">
 				<span class="side-nav__label">Позиционирование</span>
@@ -1068,9 +1142,6 @@
 			</a>
 			<a class="side-nav__link" href="#stack">
 				<span class="side-nav__label">Стек</span>
-			</a>
-			<a class="side-nav__link" href="#cases">
-				<span class="side-nav__label">Кейсы</span>
 			</a>
 			<a class="side-nav__link" href="#price">
 				<span class="side-nav__label">Пакеты</span>

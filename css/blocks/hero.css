@@ -11,14 +11,22 @@
 }
 
 .hero__stage,
+.hero__sticky,
 .hero-card-shell {
 	width: 100%;
 }
 
 .hero--scroll-transition .hero__stage {
 	position: relative;
-	min-height: 100vh;
-	min-height: 100dvh;
+	min-height: calc(100vh + var(--hero-transition-distance, 680px));
+	min-height: calc(100dvh + var(--hero-transition-distance, 680px));
+}
+
+.hero--scroll-transition .hero__sticky {
+	position: sticky;
+	top: 0;
+	height: 100vh;
+	height: 100dvh;
 	overflow: hidden;
 	overflow: clip;
 	isolation: isolate;
@@ -46,8 +54,13 @@
 }
 
 @media (pointer: coarse) {
-	.hero--touch-transition .hero__stage,
+	.hero--touch-transition .hero__stage {
+		min-height: calc(100svh + var(--hero-transition-distance, 560px));
+	}
+
+	.hero--touch-transition .hero__sticky,
 	.hero--touch-transition .hero__viewport {
+		height: 100svh;
 		min-height: 100svh;
 	}
 }
