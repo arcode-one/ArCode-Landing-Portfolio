@@ -3,6 +3,7 @@ import { initContactForm } from "./modules/contact-form.js";
 import { initHeroCardHoverFix } from "./modules/hero-card-hover-fix.js";
 import { initHeroCardTilt } from "./modules/hero-card-tilt.js";
 import { initHeroLine } from "./modules/hero-line.js";
+import { initHeroScrollTransition } from "./modules/hero-scroll-transition.js";
 import { initParallax } from "./modules/parallax.js";
 import { initPriceStack } from "./modules/price-stack.js";
 import { initProcessStack } from "./modules/process-stack.js";
@@ -13,6 +14,7 @@ import { initStackRadar } from "./modules/stack-radar.js";
 import { initTelegramLinks } from "./modules/telegram-link.js";
 
 initHeroCardHoverFix();
+initHeroScrollTransition();
 initReveal();
 initFaq();
 initContactForm();

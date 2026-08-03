@@ -238,68 +238,77 @@
 				]
 			}
 		</script>
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"
+		></script>
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"
+		></script>
 		<script type="module" src="js/main.js"></script>
 	</head>
 	<body id="top">
 		<main>
 			<section class="hero">
 				<div class="container">
-					<div class="hero__viewport">
-						<div class="hero__content">
-							<div class="hero__meta hero-intro hero-intro--label">
-								<p class="hero__label">Лендинг, который не мямлит</p>
-							</div>
-							<h1 class="hero__title hero-intro hero-intro--title">
-								<span class="hero__title-line"
-									>Сайт, который выглядит
-									<span class="hero__title-accent">дорого.</span></span
-								>
-								<span class="hero__title-line"
-									><span class="hero__title-accent">Продаёт</span> без
-									оправданий.</span
-								>
-							</h1>
-							<p class="hero__summary hero-intro hero-intro--summary">
-								Сам продумываю структуру, создаю дизайн, разрабатываю и запускаю
-								сайт. Тебе не нужно искать разных специалистов.
-							</p>
-							<div class="hero__actions hero-intro hero-intro--tags">
-								<a
-									class="hero__telegram"
-									href="https://t.me/arcode_dev"
-									rel="noopener noreferrer"
-									target="_blank"
-									data-telegram-link
-									data-telegram-fallback="https://t.me/arcode_dev"
-									data-telegram-app="tg://resolve?domain=arcode_dev"
-								>
-									<span class="hero__telegram-dot"></span>
-									<span>Написать в Telegram</span>
-								</a>
-							</div>
-							<div class="hero__line"></div>
-						</div>
-					</div>
-					<div
-						class="hero-card hero-intro hero-intro--card"
-						data-parallax="-.08"
-					>
-						<div class="hero-card__nav">
-							<div class="hero-card__nav-main">
-								<strong>Alexander</strong
-								><a class="hero-card__nav-link" href="#cases">Кейсы</a
-								><a class="hero-card__nav-link" href="#contact">Запуск</a>
-							</div>
-							<div class="hero-card__nav-side">
-								<span>ArCode</span><span>—</span><span>Web Developer</span>
+					<div class="hero__stage">
+						<div class="hero__viewport">
+							<div class="hero__content">
+								<div class="hero__meta hero-intro hero-intro--label">
+									<p class="hero__label">Лендинг, который не мямлит</p>
+								</div>
+								<h1 class="hero__title hero-intro hero-intro--title">
+									<span class="hero__title-line"
+										>Сайт, который выглядит
+										<span class="hero__title-accent">дорого.</span></span
+									>
+									<span class="hero__title-line"
+										><span class="hero__title-accent">Продаёт</span> без
+										оправданий.</span
+									>
+								</h1>
+								<p class="hero__summary hero-intro hero-intro--summary">
+									Сам продумываю структуру, создаю дизайн, разрабатываю и запускаю
+									сайт. Тебе не нужно искать разных специалистов.
+								</p>
+								<div class="hero__actions hero-intro hero-intro--tags">
+									<a
+										class="hero__telegram"
+										href="https://t.me/arcode_dev"
+										rel="noopener noreferrer"
+										target="_blank"
+										data-telegram-link
+										data-telegram-fallback="https://t.me/arcode_dev"
+										data-telegram-app="tg://resolve?domain=arcode_dev"
+									>
+										<span class="hero__telegram-dot"></span>
+										<span>Написать в Telegram</span>
+									</a>
+								</div>
+								<div class="hero__line"></div>
 							</div>
 						</div>
-						<h2 class="hero-card__title">
-							Я делаю сайт, который не стыдно показать клиенту.
-						</h2>
-						<p class="hero-card__text">
-							Без посредников. Без пустых обещаний. С нормальной реализацией.
-						</p>
+						<div class="hero-card-shell">
+							<div class="hero-card hero-intro hero-intro--card">
+								<div class="hero-card__nav">
+									<div class="hero-card__nav-main">
+										<strong>Alexander</strong
+										><a class="hero-card__nav-link" href="#cases">Кейсы</a
+										><a class="hero-card__nav-link" href="#contact">Запуск</a>
+									</div>
+									<div class="hero-card__nav-side">
+										<span>ArCode</span><span>—</span><span>Web Developer</span>
+									</div>
+								</div>
+								<h2 class="hero-card__title">
+									Я делаю сайт, который не стыдно показать клиенту.
+								</h2>
+								<p class="hero-card__text">
+									Без посредников. Без пустых обещаний. С нормальной реализацией.
+								</p>
+							</div>
+						</div>
 					</div>
 					<div class="marquee" aria-hidden="true">
 						<div class="marquee__track">

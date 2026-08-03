@@ -10,6 +10,41 @@
 	flex-direction: column;
 }
 
+.hero__stage,
+.hero-card-shell {
+	width: 100%;
+}
+
+.hero--scroll-transition .hero__stage {
+	position: relative;
+	min-height: 100vh;
+	min-height: 100dvh;
+	overflow: hidden;
+	overflow: clip;
+	isolation: isolate;
+}
+
+.hero--scroll-transition .hero__viewport,
+.hero--scroll-transition .hero-card-shell {
+	position: absolute;
+	inset: 0;
+}
+
+.hero--scroll-transition .hero__viewport {
+	z-index: 1;
+}
+
+.hero--scroll-transition .hero-card-shell {
+	z-index: 2;
+	display: grid;
+	place-items: center;
+	will-change: transform, opacity;
+}
+
+.hero--scroll-transition .hero-card {
+	margin: 0 auto;
+}
+
 .hero__viewport {
 	min-height: calc(100dvh - 160px);
 	display: flex;
