@@ -1,102 +1,118 @@
-function getProcessStackConfig() {
-  const width = window.innerWidth;
+let initialized = false;
 
-  if (width <= 640) {
-    return {
-      offsets: [84, 108, 132, 156],
-      pause: 20,
-    };
-  }
+const resetStepVisibility = (steps) => {
+	steps.forEach((step) => {
+		step.classList.remove(
+			"is-active",
+			"is-stacked",
+			"is-precompact",
+			"is-compact",
+		);
 
-  if (width <= 820) {
-    return {
-      offsets: [88, 114, 140, 166],
-      pause: 22,
-    };
-  }
-
-  if (width <= 992) {
-    return {
-      offsets: [92, 120, 148, 176],
-      pause: 24,
-    };
-  }
-
-  if (width <= 1024) {
-    return {
-      offsets: [96, 128, 160, 192],
-      pause: 28,
-    };
-  }
-
-  if (width <= 1200) {
-    return {
-      offsets: [100, 134, 168, 202],
-      pause: 30,
-    };
-  }
-
-  return {
-    offsets: [108, 144, 180, 216],
-    pause: 34,
-  };
-}
+		[step, ...step.children].forEach((element) => {
+			element.style.removeProperty("opacity");
+			element.style.removeProperty("visibility");
+			element.style.removeProperty("filter");
+			element.style.removeProperty("clip-path");
+			element.style.removeProperty("transform");
+		});
+	});
+};
 
 export function initProcessStack() {
-  const processSteps = Array.from(
-    document.querySelectorAll(".process--merge .process-step")
-  );
+	if (initialized) {
+		return;
+	}
 
-  if (processSteps.length === 0) {
-    return;
-  }
+	const process = document.querySelector(".process--merge");
+	const steps = Array.from(process?.querySelectorAll(".process-step") ?? []);
 
-  const prefersLightMode =
-    window.matchMedia("(pointer: coarse)").matches ||
-    window.matchMedia("(hover: none)").matches;
+	if (!process || !steps.length) {
+		return;
+	}
 
-  const updateProcessStack = () => {
-    if (prefersLightMode) {
-      processSteps.forEach((step) => {
-        step.classList.remove("is-precompact");
-        step.classList.remove("is-compact");
-      });
-      return;
-    }
+	initialized = true;
+	resetStepVisibility(steps);
 
-    const width = window.innerWidth;
-    const { offsets, pause } = getProcessStackConfig();
-    const useCompactOnly = width <= 820;
+	const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+	const { gsap, ScrollTrigger } = window;
 
-    processSteps.forEach((step, index) => {
-      const rect = step.getBoundingClientRect();
-      const threshold =
-        offsets[index] ?? offsets[offsets.length - 1];
-      const isCompact = rect.top <= threshold + (useCompactOnly ? pause : 2);
-      const isPrecompact = useCompactOnly ? false : rect.top <= threshold + pause;
+	if (!gsap || !ScrollTrigger || reduceMotion.matches) {
+		return;
+	}
 
-      step.classList.toggle("is-precompact", isPrecompact);
-      step.classList.toggle("is-compact", isCompact);
-    });
-  };
+	gsap.registerPlugin(ScrollTrigger);
 
-  let ticking = false;
+	const stepParts = steps.flatMap((step) => Array.from(step.children));
 
-  const requestUpdate = () => {
-    if (ticking) {
-      return;
-    }
+	gsap.fromTo(
+		stepParts,
+		{ x: 16, y: 14 },
+		{
+			x: 0,
+			y: 0,
+			duration: 0.68,
+			stagger: 0.045,
+			ease: "power3.out",
+			clearProps: "transform",
+			immediateRender: false,
+			scrollTrigger: {
+				trigger: process,
+				start: "top 82%",
+				once: true,
+				invalidateOnRefresh: true,
+			},
+		},
+	);
 
-    ticking = true;
+	const media = gsap.matchMedia();
 
-    window.requestAnimationFrame(() => {
-      updateProcessStack();
-      ticking = false;
-    });
-  };
+	media.add(
+		"(prefers-reduced-motion: no-preference)",
+		() => {
+			const stackTweens = steps.slice(0, -1).map((step, index) => {
+				const nextStep = steps[index + 1];
 
-  window.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", requestUpdate);
+				return gsap.to(step, {
+					y: -10,
+					scale: 0.972,
+					transformOrigin: "50% 0%",
+					ease: "none",
+					overwrite: "auto",
+					scrollTrigger: {
+						trigger: nextStep,
+						start: () => {
+							const stickyTop = Number.parseFloat(
+								window.getComputedStyle(nextStep).top,
+							);
+							const top = Number.isFinite(stickyTop) ? stickyTop : 108;
 
-  updateProcessStack();
+							return `top ${top + step.offsetHeight + 36}px`;
+						},
+						end: () => {
+							const stickyTop = Number.parseFloat(
+								window.getComputedStyle(nextStep).top,
+							);
+							const top = Number.isFinite(stickyTop) ? stickyTop : 108;
+
+							return `top ${top}px`;
+						},
+						scrub: 0.55,
+						invalidateOnRefresh: true,
+					},
+				});
+			});
+
+			return () => {
+				stackTweens.forEach((tween) => {
+					tween.scrollTrigger?.kill();
+					tween.kill();
+				});
+
+				gsap.set(steps, {
+					clearProps: "transform,transformOrigin",
+				});
+			};
+		},
+	);
 }

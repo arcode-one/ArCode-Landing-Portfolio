@@ -25,6 +25,14 @@ main > section + section::before {
 	display: none;
 }
 
+.diagnosis::before {
+	display: none;
+}
+
+main > .about + .process-section::before {
+	display: none;
+}
+
 .section-head {
 	display: grid;
 	grid-template-columns: 0.75fr 1.25fr;

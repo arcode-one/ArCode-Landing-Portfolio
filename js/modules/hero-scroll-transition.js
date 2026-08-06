@@ -7,7 +7,7 @@ function setupHeroScrollTransition() {
 	const cardShell = hero?.querySelector(".hero-card-shell");
 	const card = hero?.querySelector(".hero-card");
 	const marquee = hero?.querySelector(".marquee");
-	const about = document.querySelector(".about");
+	const nextSection = hero?.nextElementSibling;
 	const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 	const { gsap, ScrollTrigger } = window;
 
@@ -50,23 +50,15 @@ function setupHeroScrollTransition() {
 	hero.classList.add("hero--scroll-transition");
 	card.classList.add("hero-intro--card-ready");
 
-	const syncResponsiveMarqueeSpacing = () => {
-		if (!marquee || !about) {
-			return;
-		}
-
-		if (
-			!isTouchDevice &&
-			!window.matchMedia("(max-width: 1024px)").matches
-		) {
-			marquee.style.removeProperty("margin-top");
+	const syncMarqueeSpacing = () => {
+		if (!marquee || !nextSection) {
 			return;
 		}
 
 		const stageHeight = sticky.getBoundingClientRect().height;
 		const cardHeight = card.offsetHeight;
 		const heroStyles = window.getComputedStyle(hero);
-		const aboutStyles = window.getComputedStyle(about);
+		const nextSectionStyles = window.getComputedStyle(nextSection);
 		const cardStyles = window.getComputedStyle(card);
 		let cardShiftY = 0;
 
@@ -84,13 +76,13 @@ function setupHeroScrollTransition() {
 		);
 		const targetGap =
 			Number.parseFloat(heroStyles.paddingBottom) +
-			Number.parseFloat(aboutStyles.paddingTop);
+			Number.parseFloat(nextSectionStyles.paddingTop);
 		const marqueeOffset = targetGap - cardBottomGap;
 
 		marquee.style.marginTop = `${Math.round(marqueeOffset)}px`;
 	};
 
-	syncResponsiveMarqueeSpacing();
+	syncMarqueeSpacing();
 
 	gsap.set(intro, {
 		transformOrigin: "50% 45%",
@@ -240,7 +232,7 @@ function setupHeroScrollTransition() {
 		trigger: stage,
 		start: "top top",
 		end: `+=${transitionDistance}`,
-		onRefreshInit: syncResponsiveMarqueeSpacing,
+		onRefreshInit: syncMarqueeSpacing,
 		onRefresh: ({ progress, isActive }) => {
 			setTimelineProgress(progress, { immediate: true, isActive });
 		},
@@ -321,7 +313,7 @@ function setupHeroScrollTransition() {
 
 	if (document.fonts?.ready) {
 		document.fonts.ready.then(() => {
-			syncResponsiveMarqueeSpacing();
+			syncMarqueeSpacing();
 			scheduleHeroScrollSync();
 		});
 	}

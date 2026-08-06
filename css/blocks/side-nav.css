@@ -1,10 +1,23 @@
 .side-nav {
+	--side-nav-line-width: 18px;
+
 	position: fixed;
 	top: 50%;
 	right: 24px;
 	z-index: 28;
 	display: grid;
-	gap: 10px;
+	gap: 9px;
+	padding: 14px 10px;
+	border: 1px solid rgba(255, 255, 255, 0.075);
+	border-radius: 999px;
+	background:
+		linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+		rgba(8, 8, 8, 0.72);
+	box-shadow:
+		0 16px 38px rgba(0, 0, 0, 0.22),
+		inset 0 1px 0 rgba(255, 255, 255, 0.045);
+	-webkit-backdrop-filter: blur(14px) saturate(120%);
+	backdrop-filter: blur(14px) saturate(120%);
 	transform: translateY(-50%);
 	align-items: end;
 }
@@ -20,16 +33,14 @@
 
 .side-nav__link::before {
 	content: "";
-	width: 18px;
+	width: var(--side-nav-line-width);
 	height: 2px;
 	border-radius: 999px;
 	background: rgba(255, 255, 255, 0.28);
 	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02);
 	transition:
-		width 0.25s ease,
 		background 0.25s ease,
-		box-shadow 0.25s ease,
-		transform 0.25s ease;
+		box-shadow 0.25s ease;
 }
 
 .side-nav__label {
@@ -59,17 +70,16 @@
 }
 
 .side-nav__link.side-nav__link--active::before {
-	width: 28px;
+	width: var(--side-nav-line-width);
 	background: var(--accent);
 	box-shadow: 0 0 16px rgba(255, 59, 95, 0.24);
 }
 
 @media (hover: hover) and (pointer: fine) {
 	.side-nav__link:hover::before {
-		width: 28px;
+		width: var(--side-nav-line-width);
 		background: var(--accent);
 		box-shadow: 0 0 18px rgba(255, 59, 95, 0.28);
-		transform: translateX(-2px);
 	}
 
 	.side-nav__link:hover .side-nav__label {
@@ -90,23 +100,22 @@
 
 @media (max-width: 1200px) {
 	.side-nav {
+		--side-nav-line-width: 16px;
+
 		right: 14px;
-		gap: 9px;
+		gap: 8px;
+		padding: 12px 8px;
 	}
 
-	.side-nav__link::before {
-		width: 16px;
-	}
-
-	.side-nav__link.side-nav__link--active::before {
-		width: 24px;
-	}
 }
 
 @media (max-width: 1024px) {
 	.side-nav {
+		--side-nav-line-width: 14px;
+
 		right: 10px;
-		gap: 8px;
+		gap: 7px;
+		padding: 11px 7px;
 	}
 
 	.side-nav__link {
@@ -114,12 +123,7 @@
 	}
 
 	.side-nav__link::before {
-		width: 14px;
 		height: 2px;
-	}
-
-	.side-nav__link.side-nav__link--active::before {
-		width: 20px;
 	}
 
 	.side-nav__label {
@@ -131,18 +135,16 @@
 
 @media (max-width: 768px) {
 	.side-nav {
+		--side-nav-line-width: 12px;
+
 		right: 8px;
-		gap: 7px;
+		gap: 6px;
+		padding: 10px 6px;
 	}
 
 	.side-nav__link::before {
-		width: 12px;
 		height: 2px;
 		opacity: 0.9;
-	}
-
-	.side-nav__link.side-nav__link--active::before {
-		width: 18px;
 	}
 
 	.side-nav__label {

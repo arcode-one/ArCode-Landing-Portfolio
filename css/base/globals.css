@@ -4,6 +4,10 @@ html {
 	overflow-x: clip;
 }
 
+html.smooth-scroll-enabled {
+	scroll-behavior: auto;
+}
+
 body {
 	font-family: "Inter", Arial, sans-serif;
 	background: var(--bg);
@@ -100,5 +104,11 @@ textarea {
 @media (max-width: 360px) {
 	:root {
 		--container-gutter: 30px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
 	}
 }
