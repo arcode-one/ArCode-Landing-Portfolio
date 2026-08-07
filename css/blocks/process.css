@@ -1,5 +1,6 @@
 .process {
 	display: grid;
+	grid-auto-rows: 1fr;
 	gap: 22px;
 }
 
@@ -42,6 +43,7 @@
 	grid-template-columns: 92px minmax(0, 1fr) 112px;
 	align-items: center;
 	gap: 24px;
+	height: 100%;
 	min-height: 146px;
 	padding: 30px 34px;
 	overflow: hidden;

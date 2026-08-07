@@ -36,9 +36,11 @@ function setupAboutMotion() {
 		{
 			desktop: "(min-width: 1201px)",
 			compactDesktop: "(min-width: 901px) and (max-width: 1200px)",
+			mobile: "(max-width: 900px)",
 		},
 		(context) => {
-			const { desktop, compactDesktop } = context.conditions;
+			const { desktop, compactDesktop, mobile } = context.conditions;
+			const shouldSnap = compactDesktop || mobile;
 
 			section.classList.remove("about--static");
 
@@ -63,10 +65,10 @@ function setupAboutMotion() {
 					end: () => `+=${Math.max(getHorizontalDistance() * 0.88, 1)}`,
 					pin,
 					pinSpacing: true,
-					scrub: 1.05,
+					scrub: mobile ? 0.6 : 1.05,
 					anticipatePin: 1,
 					invalidateOnRefresh: true,
-					...(compactDesktop
+					...(shouldSnap
 						? {
 								snap: {
 									snapTo: 1 / (panels.length - 1),
