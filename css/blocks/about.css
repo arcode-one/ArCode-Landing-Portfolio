@@ -313,14 +313,77 @@
 }
 
 @media (max-width: 1200px) {
+	.about__pin {
+		min-height: 620px;
+	}
+
+	.about-panel__inner,
+	.about-panel__inner--intro {
+		width: min(calc(100% - 96px), var(--container));
+		height: min(680px, calc(100svh - 64px));
+		min-height: 520px;
+	}
+
+	.about-panel__inner--intro,
+	.about-panel--service .about-panel__inner {
+		--about-content-bottom-gap: clamp(64px, 9svh, 84px);
+	}
+
 	.about-panel__inner--intro {
 		grid-template-columns: minmax(0, 1fr) minmax(300px, 0.62fr);
-		gap: 52px;
+		gap: 44px;
+	}
+
+	.about__eyebrow {
+		margin-bottom: clamp(22px, 3vw, 34px);
+	}
+
+	.about__title {
+		font-size: clamp(76px, 8.4vw, 101px);
 	}
 
 	.about-service__body {
-		grid-template-columns: minmax(0, 0.86fr) minmax(400px, 0.72fr);
-		gap: 48px;
+		grid-template-columns: minmax(0, 1fr) minmax(380px, 0.72fr);
+		gap: 38px;
+	}
+
+	.about-service__title {
+		margin-bottom: 22px;
+		font-size: clamp(62px, 6.7vw, 80px);
+	}
+
+	.about-service__title--wide {
+		font-size: clamp(56px, 5.7vw, 68px);
+	}
+
+	.about-service__text {
+		font-size: 17px;
+	}
+
+	.about-service__cta {
+		margin-top: 30px;
+	}
+
+	.about-service__offer {
+		padding: 28px;
+		border-radius: 26px;
+	}
+
+	.about-service__metrics {
+		padding-bottom: 22px;
+	}
+
+	.about-service__includes {
+		padding-top: 22px;
+	}
+
+	.about-service__includes ul {
+		gap: 10px;
+		margin-top: 14px;
+	}
+
+	.about__progress {
+		bottom: 22px;
 	}
 }
 
