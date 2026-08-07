@@ -11,6 +11,8 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 24px;
+	width: min(calc(100% - var(--container-gutter)), 920px);
+	margin: 0 auto;
 }
 
 .legal-header__brand {

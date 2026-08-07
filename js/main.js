@@ -11,7 +11,6 @@ import { initReveal } from "./modules/reveal.js";
 import { initSideNav } from "./modules/side-nav.js";
 import { initSmoothScroll } from "./modules/smooth-scroll.js";
 import { initScrollTop } from "./modules/scroll-top.js";
-import { initStackLinesMotion } from "./modules/stack-lines-motion.js";
 import { initTelegramLinks } from "./modules/telegram-link.js";
 
 initHeroCardHoverFix();
@@ -28,7 +27,6 @@ const initDeferredEnhancements = () => {
 	initHeroLine();
 	initProcessStack();
 	initParallax();
-	initStackLinesMotion();
 	initSideNav();
 	initScrollTop();
 };

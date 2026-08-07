@@ -80,9 +80,7 @@
 	font-weight: 650;
 	line-height: 1.02;
 	letter-spacing: -0.06em;
-	transition:
-		color 0.3s ease,
-		transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+	transition: color 0.3s ease;
 }
 
 .stack-line__list li:not(:last-child)::after {
@@ -96,7 +94,6 @@
 @media (hover: hover) and (pointer: fine) {
 	.stack-line__list li:hover {
 		color: var(--text);
-		transform: translateX(4px);
 	}
 }
 
