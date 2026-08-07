@@ -57,6 +57,69 @@ function setupAboutMotion() {
 				offer: panel.querySelector(".about-service__offer"),
 				watermark: panel.querySelector(".about-service__watermark"),
 			}));
+			const adaptiveTitleLayers = panels.map((panel, index) => {
+				const inner = panel.querySelector(".about-panel__inner");
+				const title = panel.querySelector(
+					index === 0 ? ".about__title" : ".about-service__title",
+				);
+
+				return {
+					inner,
+					title,
+					start:
+						index === 0 ? panel.querySelector(".about__eyebrow") : title,
+					end:
+						index === 0
+							? panel.querySelector(".about__lead")
+							: panel.querySelector(".about-service__cta"),
+				};
+			});
+
+			const positionAdaptiveTitles = () => {
+				if (desktop || window.innerWidth > 820) {
+					pin.style.removeProperty("--about-mobile-panel-top");
+					pin.style.removeProperty("--about-mobile-title-leading");
+					return;
+				}
+
+				const metrics = adaptiveTitleLayers
+					.map(({ inner, title, start, end }) => {
+						if (!inner || !title || !start || !end) {
+							return null;
+						}
+
+						const titleRect = title.getBoundingClientRect();
+						const startRect = start.getBoundingClientRect();
+						const endRect = end.getBoundingClientRect();
+
+						return {
+							innerHeight: inner.clientHeight,
+							above: Math.max(titleRect.top - startRect.top, 0),
+							below: Math.max(endRect.bottom - titleRect.top, 0),
+						};
+					})
+					.filter(Boolean);
+
+				if (!metrics.length) {
+					return;
+				}
+
+				const innerHeight = Math.min(
+					...metrics.map(({ innerHeight: height }) => height),
+				);
+				const titleLeading = Math.max(...metrics.map(({ above }) => above));
+				const contentBelow = Math.max(...metrics.map(({ below }) => below));
+				const panelTop = Math.max(
+					(innerHeight - titleLeading - contentBelow) / 2,
+					0,
+				);
+
+				pin.style.setProperty("--about-mobile-panel-top", `${panelTop}px`);
+				pin.style.setProperty(
+					"--about-mobile-title-leading",
+					`${titleLeading}px`,
+				);
+			};
 
 			const positionAdaptiveWatermarks = () => {
 				serviceLayers.forEach(({ inner, offer, watermark }) => {
@@ -80,20 +143,32 @@ function setupAboutMotion() {
 				});
 			};
 
-			const watermarkObserver =
+			const syncAdaptiveLayout = () => {
+				positionAdaptiveTitles();
+				positionAdaptiveWatermarks();
+			};
+
+			const layoutObserver =
 				!desktop && "ResizeObserver" in window
-					? new ResizeObserver(positionAdaptiveWatermarks)
+					? new ResizeObserver(syncAdaptiveLayout)
 					: null;
 
 			serviceLayers.forEach(({ inner, offer, watermark }) => {
 				[inner, offer, watermark].forEach((element) => {
 					if (element) {
-						watermarkObserver?.observe(element);
+						layoutObserver?.observe(element);
+					}
+				});
+			});
+			adaptiveTitleLayers.forEach(({ inner, title, start, end }) => {
+				[inner, title, start, end].forEach((element) => {
+					if (element) {
+						layoutObserver?.observe(element);
 					}
 				});
 			});
 
-			positionAdaptiveWatermarks();
+			syncAdaptiveLayout();
 
 			gsap.set(rail, { x: 0 });
 			updateProgress(0);
@@ -222,10 +297,10 @@ function setupAboutMotion() {
 			}
 
 			const refreshOnLoad = () => {
-				positionAdaptiveWatermarks();
+				syncAdaptiveLayout();
 				ScrollTrigger.refresh();
 			};
-			ScrollTrigger.addEventListener("refreshInit", positionAdaptiveWatermarks);
+			ScrollTrigger.addEventListener("refreshInit", syncAdaptiveLayout);
 			window.addEventListener("load", refreshOnLoad, { once: true });
 			document.fonts?.ready.then(refreshOnLoad);
 
@@ -233,9 +308,11 @@ function setupAboutMotion() {
 				window.removeEventListener("load", refreshOnLoad);
 				ScrollTrigger.removeEventListener(
 					"refreshInit",
-					positionAdaptiveWatermarks,
+					syncAdaptiveLayout,
 				);
-				watermarkObserver?.disconnect();
+				layoutObserver?.disconnect();
+				pin.style.removeProperty("--about-mobile-panel-top");
+				pin.style.removeProperty("--about-mobile-title-leading");
 				horizontalTween.scrollTrigger?.kill();
 				horizontalTween.kill();
 				gsap.set(rail, { clearProps: "transform" });
