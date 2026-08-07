@@ -343,8 +343,17 @@
 	}
 
 	.about-service__body {
+		position: relative;
+		z-index: 1;
 		grid-template-columns: minmax(0, 1fr) minmax(380px, 0.72fr);
 		gap: 38px;
+	}
+
+	.about-service__watermark {
+		top: 45%;
+		right: 0;
+		z-index: 0;
+		transform: translateY(-100%);
 	}
 
 	.about-service__title {
@@ -365,6 +374,8 @@
 	}
 
 	.about-service__offer {
+		position: relative;
+		z-index: 2;
 		padding: 28px;
 		border-radius: 26px;
 	}
@@ -395,6 +406,26 @@
 
 	.about-service__title {
 		font-size: clamp(58px, 7vw, 86px);
+	}
+}
+
+@media (min-width: 901px) and (max-width: 1200px) {
+	.about-panel__inner--intro,
+	.about-panel--service .about-panel__inner {
+		padding-bottom: 0;
+	}
+
+	.about-panel__inner--intro {
+		align-content: center;
+		align-items: center;
+	}
+
+	.about-panel--service .about-panel__inner {
+		justify-content: center;
+	}
+
+	.about-panel--service .about-service__body {
+		align-items: center;
 	}
 }
 
@@ -648,6 +679,8 @@
 	}
 
 	.about-service__body {
+		position: relative;
+		z-index: 1;
 		grid-template-columns: 1fr;
 		align-items: center;
 		gap: clamp(14px, 2.6svh, 24px);
@@ -668,6 +701,8 @@
 	}
 
 	.about-service__offer {
+		position: relative;
+		z-index: 2;
 		padding: clamp(15px, 4.6vw, 22px);
 		border-radius: 22px;
 		backdrop-filter: none;
@@ -708,9 +743,10 @@
 	}
 
 	.about-service__watermark {
-		top: 5%;
+		top: 45%;
 		right: 0;
-		transform: none;
+		z-index: 0;
+		transform: translateY(-100%);
 	}
 
 	.about__progress {

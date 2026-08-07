@@ -39,8 +39,7 @@ function setupAboutMotion() {
 			mobile: "(max-width: 900px)",
 		},
 		(context) => {
-			const { desktop, compactDesktop, mobile } = context.conditions;
-			const shouldSnap = compactDesktop || mobile;
+			const { desktop } = context.conditions;
 
 			section.classList.remove("about--static");
 
@@ -52,6 +51,49 @@ function setupAboutMotion() {
 					gsap.set(progressBar, { scaleX: progress });
 				}
 			};
+
+			const serviceLayers = panels.slice(1).map((panel) => ({
+				inner: panel.querySelector(".about-panel__inner"),
+				offer: panel.querySelector(".about-service__offer"),
+				watermark: panel.querySelector(".about-service__watermark"),
+			}));
+
+			const positionAdaptiveWatermarks = () => {
+				serviceLayers.forEach(({ inner, offer, watermark }) => {
+					if (!inner || !offer || !watermark) {
+						return;
+					}
+
+					if (desktop) {
+						watermark.style.removeProperty("top");
+						watermark.style.removeProperty("transform");
+						return;
+					}
+
+					const innerRect = inner.getBoundingClientRect();
+					const offerRect = offer.getBoundingClientRect();
+					const watermarkHeight = watermark.offsetHeight;
+					const top = offerRect.top - innerRect.top - watermarkHeight * 0.7;
+
+					watermark.style.top = `${Math.max(top, 0)}px`;
+					watermark.style.transform = "none";
+				});
+			};
+
+			const watermarkObserver =
+				!desktop && "ResizeObserver" in window
+					? new ResizeObserver(positionAdaptiveWatermarks)
+					: null;
+
+			serviceLayers.forEach(({ inner, offer, watermark }) => {
+				[inner, offer, watermark].forEach((element) => {
+					if (element) {
+						watermarkObserver?.observe(element);
+					}
+				});
+			});
+
+			positionAdaptiveWatermarks();
 
 			gsap.set(rail, { x: 0 });
 			updateProgress(0);
@@ -65,19 +107,9 @@ function setupAboutMotion() {
 					end: () => `+=${Math.max(getHorizontalDistance() * 0.88, 1)}`,
 					pin,
 					pinSpacing: true,
-					scrub: mobile ? 0.6 : 1.05,
+					scrub: true,
 					anticipatePin: 1,
 					invalidateOnRefresh: true,
-					...(shouldSnap
-						? {
-								snap: {
-									snapTo: 1 / (panels.length - 1),
-									duration: { min: 0.16, max: 0.38 },
-									delay: 0.08,
-									ease: "power2.out",
-								},
-							}
-						: {}),
 					onUpdate: (self) => updateProgress(self.progress),
 				},
 			});
@@ -189,12 +221,21 @@ function setupAboutMotion() {
 				});
 			}
 
-			const refreshOnLoad = () => ScrollTrigger.refresh();
+			const refreshOnLoad = () => {
+				positionAdaptiveWatermarks();
+				ScrollTrigger.refresh();
+			};
+			ScrollTrigger.addEventListener("refreshInit", positionAdaptiveWatermarks);
 			window.addEventListener("load", refreshOnLoad, { once: true });
 			document.fonts?.ready.then(refreshOnLoad);
 
 			return () => {
 				window.removeEventListener("load", refreshOnLoad);
+				ScrollTrigger.removeEventListener(
+					"refreshInit",
+					positionAdaptiveWatermarks,
+				);
+				watermarkObserver?.disconnect();
 				horizontalTween.scrollTrigger?.kill();
 				horizontalTween.kill();
 				gsap.set(rail, { clearProps: "transform" });
