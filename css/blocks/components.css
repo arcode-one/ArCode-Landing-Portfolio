@@ -29,7 +29,7 @@ main > section + section::before {
 	display: none;
 }
 
-main > .about + .process-section::before {
+main > .about + .cases::before {
 	display: none;
 }
 
