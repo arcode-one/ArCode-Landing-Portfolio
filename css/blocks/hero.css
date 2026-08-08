@@ -746,7 +746,11 @@
 	}
 
 	.hero-card__title {
-		font-size: clamp(32px, 9vw, 46px);
+		font-size: clamp(24px, 7.8vw, 46px);
+	}
+
+	.hero-card__title-line {
+		white-space: nowrap;
 	}
 
 	.hero-card__text {
@@ -784,10 +788,6 @@
 	.hero-card {
 		min-height: 300px;
 		border-radius: 18px;
-	}
-
-	.hero-card__title {
-		font-size: clamp(28px, 8.8vw, 38px);
 	}
 
 	.hero-card__text {
